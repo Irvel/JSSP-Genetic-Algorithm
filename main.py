@@ -7,5 +7,4 @@ def is_permutation_valid(permutation):
 def get_random_permutation():
 	"""return a random permutation from the pool"""
 
-
-
+def calculate_makespan(permutation)

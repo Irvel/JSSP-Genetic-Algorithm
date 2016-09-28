@@ -87,4 +87,3 @@ if __name__ == "__main__":
 
     for op in get_operations_list(operations_matrix, num_operations):
         print (op)
->>>>>>> 2e60209beecb15a55f153851776415d8203539f2

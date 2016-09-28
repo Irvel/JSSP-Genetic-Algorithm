@@ -1,6 +1,7 @@
 from population import Population
 import random
 from operation import Operation
+import population
 
 def print_matrix(matrix, rows, cols):
 	for i in range(rows):
@@ -65,3 +66,6 @@ if __name__ == "__main__":
 
     for op in get_operations_list(operations_matrix, num_operations):
         print (op)
+
+    print(population.is_valid_permutation(get_operations_list(operations_matrix_num_operations)))
+

@@ -29,5 +29,23 @@ class Population:
         score = make_span + penalization
         return score
 
-    def is_valid_permutation(permutation):
-        return True
+def is_valid_permutation(permutation):
+    """ 
+    Map containg the most recent iterated Order# for a Job#
+    E.g.
+    J1 -> 2
+    J2 -> 1
+    J3 -> 3
+
+    This means that the last time an operation belonging to Job1 was
+    processed, its Order# was 2. So, if the next operation of Job1 has
+    an Order# of 1 it means it is not valid.
+    """
+    last_job_order = {}
+
+    for operation in permutation:
+        job = operation.order
+        order = operation.order
+        if order < last_job_order[job]:
+            return False
+    return True

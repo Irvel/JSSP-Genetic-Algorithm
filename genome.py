@@ -1,7 +1,7 @@
 """
 genome.py
 ~~~~~~~~~~~~~
-The class Genome stores the set of operations that compose an individual in the
+This class stores the set of operations that compose an individual in the
 population.
 """
 class Genome:

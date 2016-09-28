@@ -36,7 +36,6 @@ def calculate_makespan(permutation):
 	""""""
 
 if __name__ == "__main__":
-    population = Population(operation_list)
     num_operations = 11
     num_columns = 4
     num_machines = 3
@@ -63,5 +62,7 @@ if __name__ == "__main__":
     fill_matrix(operations_matrix, num_operations, num_columns, max_operations_per_job, num_machines)
     print_matrix(operations_matrix, num_operations, num_columns)
 
-    for op in get_operations_list(operations_matrix, num_operations):
+    operations_list = get_operations_list(operations_matrix, num_operations)
+    for op in operations_list:
         print (op)
+    population = Population(operations_list)

@@ -15,19 +15,22 @@ class Population:
         self.create_new_population(operations)
 
     def create_new_population(self, operations):
-        permutations = product(operations repeat=len(operations))
+        permutations = product(operations, repeat=len(operations))
         for _ in range(SIZE):
             genome = Genome(next(permutations))
-            genome.score = calculate_fitness(genome.operations)
+            genome.score = self.calculate_fitness(genome.operations)
             self.genomes.append(genome)
 
-    def calculate_fitness(self, operations):
+    def calculate_fitness(self, permutation):
         penalization = 0
-        if !is_valid_permutation(permutation):
+        if not self.is_valid_permutation(permutation):
             penalization = BAD_SCORE
         make_span = calculate_makespan(permutation)
         score = make_span + penalization
         return score
 
-    def is_valid_permutation(permutation):
+    def is_valid_permutation(self, permutation):
         return True
+
+def calculate_makespan(permutation):
+    return 0

@@ -7,6 +7,8 @@ def is_permutation_valid(permutation):
 def get_random_permutation():
 	"""return a random permutation from the pool"""
 
+def calculate_makespan(permutation)
+
 num_operations = 10
 
 """ 
@@ -26,4 +28,3 @@ for i in range(num_operations):
 	operations.append([])
 	for j in range(4):
 		operations[i].append(None)
-

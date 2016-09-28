@@ -14,6 +14,13 @@ class Population:
         self.genomes = []
         self.create_new_population(operations)
 
+    def __str__(self):
+        genomes_string = ""
+        for genome in self.genomes:
+            genomes_string.append(str(genome))
+            genomes_string.append("\n")
+        return genomes_string
+
     def create_new_population(self, operations):
         permutations = product(operations, repeat=len(operations))
         for _ in range(SIZE):

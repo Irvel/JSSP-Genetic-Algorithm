@@ -1,6 +1,7 @@
 from population import Population
 import random
 from operation import Operation
+from population import is_valid_permutation
 
 def print_matrix(matrix, rows, cols):
     for i in range(rows):
@@ -80,9 +81,29 @@ if __name__ == "__main__":
     print_matrix(operations_matrix, num_operations, num_columns)
 
     operations_list = get_operations_list(operations_matrix, num_operations)
+
+    """ Print operations in original order """
+    print("\n")
+    print("--------- Valid Permutation ---------")
     for op in operations_list:
         print (op)
+    print("Is valid permutation: " + str(is_valid_permutation(operations_list)))
+    print("-------------------------------------")
+
+    """ Swap 2 values to make it non valid """
+    print("\n")
+    print("Swaping values...")
+    temp = operations_list[7]
+    operations_list[7] = operations_list[8]
+    operations_list[8] = temp
+
+    """ Print operations in new order """
+    print("\n")
+    print("--------- Not Valid Permutation ---------")
+    for op in operations_list:
+        print (op)
+    print("Is valid permutation: " + str(is_valid_permutation(operations_list)))
+    print("-------------------------------------")
+
 
     population = Population(operations_list)
-
-    print(population.is_valid_permutation(operations_list))

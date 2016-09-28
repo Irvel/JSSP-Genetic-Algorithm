@@ -1,5 +1,7 @@
 import random
 
+BAD_SCORE = -10000
+
 def print_matrix(matrix, rows, cols):
 	for i in range(rows):
 		for j in range(cols):
@@ -22,7 +24,7 @@ def fill_matrix(matrix, num_operations, num_columns, operations_per_job, num_mac
 def permute(n):
 	"""return a list of n valid permutations"""
 
-def is_permutation_valid(permutation):
+def is_valid_permutation(permutation):
 	return False
 
 def get_random_permutation():
@@ -31,28 +33,38 @@ def get_random_permutation():
 def calculate_makespan(permutation):
 	""""""
 
-num_operations = 11
-num_columns = 4
-num_machines = 3
-max_operations_per_job = 3
-""" 
-operations is a Nx4 matrix representing each operation
-and its Job, Order, Machine, and operation Time.
-E.g.
+def calculate_fitness(permutation):
+    penalization = 0
+    if not is_valid_permutation(permutation):
+        penalization = BAD_SCORE
+    make_span = calculate_makespan(permutation)
+    score = make_span + penalization
+    return score
 
-	 J  O  M   T
-Op1 [1, 1, 2, 10]
-Op2 [2, 1, 1,  5]
-Op3 [1, 2, 1, 20]
-Op4 [1, 3, 3, 50]
-Op5 [2, 2, 2,  3]
-"""
-operations = []
-for i in range(num_operations):
-	operations.append([])
-	for j in range(num_columns):
-		operations[i].append(None)
 
-fill_matrix(operations, num_operations, num_columns, max_operations_per_job, num_machines)
-print_matrix(operations, num_operations, num_columns)
+if __name__ == "__main__":
+	num_operations = 11
+	num_columns = 4
+	num_machines = 3
+	max_operations_per_job = 3
+	
+	""" 
+	operations is a Nx4 matrix representing each operation
+	and its Job, Order, Machine, and operation Time.
+	E.g.
 
+		 J  O  M   T
+	Op1 [1, 1, 2, 10]
+	Op2 [2, 1, 1,  5]
+	Op3 [1, 2, 1, 20]
+	Op4 [1, 3, 3, 50]
+	Op5 [2, 2, 2,  3]
+	"""
+	operations = []
+	for i in range(num_operations):
+		operations.append([])
+		for j in range(num_columns):
+			operations[i].append(None)
+
+	fill_matrix(operations, num_operations, num_columns, max_operations_per_job, num_machines)
+	print_matrix(operations, num_operations, num_columns)

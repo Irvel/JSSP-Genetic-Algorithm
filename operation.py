@@ -15,3 +15,7 @@ class Operation:
         self.duration = duration
         self.job = job
         self.order = order
+
+    def __str__(self):
+    	return ("Job#" + str(self.job) + " Order#" + str(self.order) + 
+    	" Machine#" + str(self.machine) + " Duration=" + str(self.duration))

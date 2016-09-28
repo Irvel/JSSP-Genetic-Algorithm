@@ -14,6 +14,13 @@ class Population:
         self.genomes = []
         self.create_new_population(operations)
 
+    def __str__(self):
+        genomes_string = ""
+        for genome in self.genomes:
+            genomes_string.append(str(genome))
+            genomes_string.append("\n")
+        return genomes_string
+
     def create_new_population(self, operations):
         permutations = product(operations, repeat=len(operations))
         for _ in range(SIZE):
@@ -52,5 +59,26 @@ class Population:
             last_job_order[job] = order
         return True
 
+
 def calculate_makespan(permutation):
-    return 0
+    cummulative_machine_times = {}
+    cummulative_job_times = {}
+
+    for operation in permutation:
+        #initialize variables with 0 if does not exist
+        if not operation.job in cummulative_job_times:
+            cummulative_job_times[operation.job] = 0
+
+        if not operation.machine in cummulative_machine_times:
+            cummulative_machine_times[operation.machine] = 0
+
+        if cummulative_job_times[operation.job] < cummulative_machine_times[operation.machine]:
+            cummulative_machine_times[operation.machine] += operation.duration
+            cummulative_job_times[operation.job] = cummulative_machine_times[operation.machine]
+        else:
+            cummulative_job_times[operation.job] += operation.duration
+            cummulative_machine_times[operation.machine] = cummulative_job_times[operation.job]
+
+    #Return the biggest time of the jobs
+    return cummulative_job_times[max(cummulative_job_times, key=cummulative_job_times.get)]
+

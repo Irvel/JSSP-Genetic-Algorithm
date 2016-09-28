@@ -3,10 +3,10 @@ import random
 from operation import Operation
 
 def print_matrix(matrix, rows, cols):
-	for i in range(rows):
-		for j in range(cols):
-			print (matrix[i][j], end=" ")
-		print ("")
+    for i in range(rows):
+        for j in range(cols):
+            print (matrix[i][j], end=" ")
+        print ("")
 
 def fill_matrix(matrix, num_operations, num_columns, operations_per_job, num_machines):
 	job_number = 1
@@ -20,7 +20,6 @@ def fill_matrix(matrix, num_operations, num_columns, operations_per_job, num_mac
 		matrix[i][2] = random.randrange(1, num_machines + 1, 1)
 		matrix[i][3] = random.randrange(5, 100, 5)
 		job_count += 1
-
 
 def calculate_makespan(permutation):
 	cummulative_machine_times = {}
@@ -41,20 +40,16 @@ def calculate_makespan(permutation):
 			cummulative_job_times[operation.job] += operation.duration
 			cummulative_machine_times[operation.machine] = cummulative_job_times[operation.job]
 
-	#Return the biggest time of the jobs
-	return cummulative_job_times[max(cummulative_job_times, key=cummulative_job_times.get)]
-
 def get_operations_list(matrix, num_operations):
-	operations_list = []
-	for i in range(num_operations):
-		job_num = matrix[i][0]
-		order_num = matrix[i][1]
-		machine_num = matrix[i][2]
-		time = matrix[i][3]
-		operations_list.append(Operation(machine_num, time, job_num, order_num))
+    operations_list = []
+    for i in range(num_operations):
+        job_num = matrix[i][0]
+        order_num = matrix[i][1]
+        machine_num = matrix[i][2]
+        time = matrix[i][3]
+        operations_list.append(Operation(machine_num, time, job_num, order_num))
 
-	return operations_list
-
+    return operations_list
 
 
 if __name__ == "__main__":

@@ -45,13 +45,11 @@ class Population:
         """
         self.genomes = self.genomes[:100]
 
-     def reproduce_population(self):
+    def reproduce_population(self):
         """
         The miracle of life
         """
         pass
-
-
 
 def calculate_fitness(permutation):
     penalization = 0
@@ -71,7 +69,7 @@ def is_valid_permutation(permutation):
         for dep in op.dependencies:
             if operation_done[dep] == 0:
                 return False
-        operation_done[op] = 1
+        operation_done[op] = 1  
     return True
 
 def calculate_makespan(permutation):

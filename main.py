@@ -1,4 +1,5 @@
 from population import Population
+from job import Job
 import random
 from operation import Operation
 from population import is_valid_permutation
@@ -36,8 +37,8 @@ def get_operations_list(matrix, num_operations):
 
 if __name__ == "__main__":
 	products = {}
-	products['1111'] = random.randrange(1, 50, 1)
-	products['2222'] = random.randrange(1, 50, 1)
+	products['1111'] = 2
+	products['2222'] = 3
 
 	all_jobs = []
 	all_operations = []
@@ -51,31 +52,5 @@ if __name__ == "__main__":
 		print(operation)
 
 
+
     
-
-    """ Print operations in original order """
-    print("\n")
-    print("--------- Valid Permutation ---------")
-    for op in operations_list:
-        print (op)
-    print("Is valid permutation: " + str(is_valid_permutation(operations_list)))
-    print("-------------------------------------")
-
-    """ Swap 2 values to make it non valid """
-    print("\n")
-    print("Swaping values...")
-    temp = operations_list[7]
-    operations_list[7] = operations_list[8]
-    operations_list[8] = temp
-
-    """ Print operations in new order """
-    print("\n")
-    print("--------- Not Valid Permutation ---------")
-    for op in operations_list:
-        print (op)
-    print("Is valid permutation: " + str(is_valid_permutation(operations_list)))
-    print("-------------------------------------")
-
-    print("\n\nThis is the generated population:")
-    population = Population(operations_list)
-    #print(population)

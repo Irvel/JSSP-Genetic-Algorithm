@@ -6,7 +6,8 @@ class Job:
 		self.goal_date  = goal_date
 		self.model = model
 		self.operations = []
-
+		self.job_id = job_id
+		
 		if model == "1111":
 			o1 = Operation("m1", 3, "1111", job_id)
 			o2 = Operation("m2", 4, "1111", job_id)

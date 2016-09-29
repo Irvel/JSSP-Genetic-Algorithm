@@ -10,6 +10,7 @@ production line.
  to the same job
 """
 class Operation:
+
     def __init__(self, machine, duration, job_model):
     	self.machine = machine
     	self.duration = duration

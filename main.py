@@ -53,5 +53,5 @@ if __name__ == "__main__":
 	for operation in all_operations:
 		print(operation)
 
-    population = Population(operations_list)
+    population = Population(all_operations)
     population.reproduce_population()

@@ -7,7 +7,7 @@ population.
 class Genome:
     def __init__(self, operations):
         self.operations = operations
-        self.score = 0
+        self.score = 999999
 
     def __str__(self):
         # A string representation of the genome takes the sum of the

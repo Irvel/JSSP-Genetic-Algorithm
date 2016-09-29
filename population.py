@@ -12,6 +12,7 @@ from operator import attrgetter
 SIZE = 100  # The static size that the population will be kept at
 BAD_SCORE = 1000  # The penalization for each genome that violates the date
 MATE_DIST = 50  # How much genetic info from each parent to take
+MUTATE_PROB = 0.1  # How likely is a newborn to mutate
 
 class Population:
 
@@ -51,7 +52,21 @@ class Population:
     def reproduce_population(self):
         """
         The miracle of life
+        This method will take two random parents and create two children from
+        them. It will repeat this process untill two valid children are created.
         """
+        while True:
+            first_child, second_child = self.mate()
+            mutate_genome(first_child)
+            mutate_genome(second_child)
+
+            self.genomes.append(first_child)
+            self.genomes.append(second_child)
+            # Keep reproducing until two valid children are created
+            if is_valid_permutation(first_child) and is_valid_permutation(second_child):
+                break
+
+    def mate(self):
         # Choose two parents from the existing population pseudo-randomly
         parent1, parent2 = random.sample(self.genomes, 2)
         genes_num = len(parent1.operations)
@@ -73,7 +88,6 @@ class Population:
             if gene not in genes_from_p1:
                 idx_from_p2.append(idx)
         idx_from_p2.sort()
-
         first_child = merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2)
 
         # The genes for the second child are the ones unused by the first child
@@ -81,13 +95,9 @@ class Population:
         idx_from_p1.sort()
         idx_from_p2 = [x for x in range(genes_num) if x not in idx_from_p2]
         idx_from_p2.sort()
-
         second_child = merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2)
-        print("First child : ")
-        print("".join([str(x.job) + str(x.order) for x in first_child]))
-        print("\n\n\nSecond child : ")
-        print("".join([str(x.job) + str(x.order) for x in second_child]))
 
+        return first_child, second_child
 
 
 def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
@@ -111,6 +121,14 @@ def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
         child.append(parent2.operations[idx_from_p2[idx2]])
         idx2 += 1
     return child
+
+
+def mutate_genome(genome):
+    if random.random() < MUTATE_PROB:
+        idx1, idx2 = random.sample(len(genome), 2)
+        genome[idx1], genome[idx2] = genome[idx2], genome[idx1]
+    return genome
+
 
 def calculate_fitness(permutation):
 	penalization = 0

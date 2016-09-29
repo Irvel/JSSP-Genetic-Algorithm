@@ -15,7 +15,6 @@ class Operation:
         self.duration = duration
         self.job = job
         self.order = order
-        self.op_id = op_id
 
     def __str__(self):
     	return ("Job#" + str(self.job) + " Order#" + str(self.order) +

@@ -10,12 +10,17 @@ production line.
  to the same job
 """
 class Operation:
-    def __init__(self, machine, duration, job, order):
-        self.machine = machine
-        self.duration = duration
-        self.job = job
-        self.order = order
+    def __init__(self, machine, duration, job_model):
+    	self.machine = machine
+    	self.duration = duration
+    	self.job_model = job_model
+    	self.dependencies = []
 
     def __str__(self):
-    	return ("Job#" + str(self.job) + " Order#" + str(self.order) + 
+    	return ("Job#" + str(self.job_model) + 
     	" Machine#" + str(self.machine) + " Duration=" + str(self.duration))
+
+    def print_dependencies(self):
+    	print(str(self) + " depends on ")
+    	for operation in self.dependencies:
+    		print(str(operation))

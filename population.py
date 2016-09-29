@@ -154,7 +154,7 @@ def calculate_makespan(permutation):
 			for dependent_operation in operation.dependencies:
 				if operations_end_time[dependent_operation] > max_time_dependencies:
 					max_time_dependencies = operations_end_time[dependent_operation]
-			operations_end_times[operation] = max_time_dependencies
+			operations_end_time[operation] = max_time_dependencies
 
 
 		#Calculate time

@@ -58,5 +58,5 @@ if __name__ == "__main__":
 	print(str(var2))
 	print(var1)
 
-    population = Population(all_operations)
-    population.reproduce_population()
+	population = Population(all_operations)
+	population.reproduce_population()

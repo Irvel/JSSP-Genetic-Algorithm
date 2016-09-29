@@ -27,7 +27,6 @@ if __name__ == "__main__":
 
 	var1, var2 = calculate_makespan(all_operations)
 	print(str(var2))
-	print(var1)
 
-	population = Population(all_operations)
-	population.reproduce_population()
+	#population = Population(all_operations)
+	#population.reproduce_population()

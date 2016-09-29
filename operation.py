@@ -22,8 +22,9 @@ class Operation:
     	self.dependencies = []
 
     def __str__(self):
-    	return ("Name: " + str(name) + " Machine: " + str(self.machine)
-    		+ " Duration: " + str(self.duration) + "Job model: " + str(self.job_model) + "Job ID: " + str(self.job_id))
+    	return (" Machine: " + str(self.machine)
+    		+ " Duration: " + str(self.duration) + " Job model: " + str(self.job_model) + " Job ID: " 
+            + str(self.job_id) + " Name: " + str(self.name))
 
     def print_dependencies(self):
     	if len(self.dependencies) > 0:

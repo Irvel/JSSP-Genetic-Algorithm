@@ -191,5 +191,5 @@ def calculate_makespan(permutation):
 
 	"""Return a map mapping each job with the corresponding end time,
 	 and the biggest time of the jobs"""
-	print(operations_end_time)
+	#print(operations_end_time)
 	return jobs_end_time, jobs_end_time[max(jobs_end_time, key=jobs_end_time.get)]

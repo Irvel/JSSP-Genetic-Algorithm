@@ -7,8 +7,9 @@ from datetime import datetime, timedelta
 
 if __name__ == "__main__":
 	products = {}
-	products['1111'] = 2
-	products['2222'] = 1
+	products['5967'] = 2
+	products['8047'] = 1
+	products['4025'] = 2
 
 	all_jobs = []
 	all_operations = []
@@ -26,7 +27,6 @@ if __name__ == "__main__":
 
 	var1, var2 = calculate_makespan(all_operations)
 	print(str(var2))
-	print(var1)
 
-	population = Population(all_operations)
-	population.reproduce_population()
+	#population = Population(all_operations)
+	#population.reproduce_population()

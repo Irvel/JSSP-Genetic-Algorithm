@@ -100,26 +100,26 @@ class Population:
 
 
 def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
-    idx1 = 0
-    idx2 = 0
-    child = []
-    # Merge the selected genes from each parent while keeping their relative
-    # order. The lists of indexes indicates which genes have been selected.
-    while idx1 < len(idx_from_p1) and idx2 < len(idx_from_p2):
-        if idx_from_p1[idx1] <= idx_from_p2[idx2]:
-            child.append(parent1.operations[idx_from_p1[idx1]])
-            idx1 += 1
-        else:
-            child.append(parent2.operations[idx_from_p2[idx2]])
-            idx2 += 1
+	idx1 = 0
+	idx2 = 0
+	child = []
+	# Merge the selected genes from each parent while keeping their relative
+	# order. The lists of indexes indicates which genes have been selected.
+	while idx1 < len(idx_from_p1) and idx2 < len(idx_from_p2):
+		if idx_from_p1[idx1] <= idx_from_p2[idx2]:
+			child.append(parent1.operations[idx_from_p1[idx1]])
+			idx1 += 1
+		else:
+			child.append(parent2.operations[idx_from_p2[idx2]])
+			idx2 += 1
 
-    while idx1 < len(idx_from_p1):
-        child.append(parent1.operations[idx_from_p1[idx1]])
-        idx1 += 1
-    while idx2 < len(idx_from_p2):
-        child.append(parent2.operations[idx_from_p2[idx2]])
-        idx2 += 1
-    return child
+	while idx1 < len(idx_from_p1):
+		child.append(parent1.operations[idx_from_p1[idx1]])
+		idx1 += 1
+	while idx2 < len(idx_from_p2):
+		child.append(parent2.operations[idx_from_p2[idx2]])
+		idx2 += 1
+	return child
 
 
 def mutate_genome(genome):
@@ -190,4 +190,5 @@ def calculate_makespan(permutation):
 
 	"""Return a map mapping each job with the corresponding end time,
 	 and the biggest time of the jobs"""
+	#print(operations_end_time)
 	return jobs_end_time, jobs_end_time[max(jobs_end_time, key=jobs_end_time.get)]

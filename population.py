@@ -12,82 +12,92 @@ from operator import attrgetter
 SIZE = 100  # The static size that the population will be kept at
 BAD_SCORE = 1000  # The penalization for each genome that violates the date
 MATE_DIST = 50  # How much genetic info from each parent to take
+MUTATE_PROB = 0.1  # How likely is a newborn to mutate
 
 class Population:
 
-	def __init__(self, operations):
-		self.genomes = []
-		self.create_new_population(operations)
-		self.sort_population()
-		self.reap_population()
-		print("\n\nThe initial population has been generated")
+    def __init__(self, operations):
+        self.genomes = []
+        self.create_new_population(operations)
+        self.sort_population()
+        self.reap_population()
+        print("\n\nThe initial population has been generated")
 
-	def __str__(self):
-		genomes_string = ""
-		for genome in self.genomes:
-			genomes_string += str(genome)
-		return genomes_string
+    def __str__(self):
+        genomes_string = ""
+        for genome in self.genomes:
+            genomes_string += str(genome)
+        return genomes_string
 
-	def create_new_population(self, operations):
-		permutations = product(operations, repeat=len(operations))
-		for _ in range(SIZE * 1000):
-			random.shuffle(operations)
-			genome = Genome(operations[:])
-			genome.score = calculate_fitness(genome.operations)
-			self.genomes.append(genome)
+    def create_new_population(self, operations):
+        permutations = product(operations, repeat=len(operations))
+        for _ in range(SIZE * 1000):
+            random.shuffle(operations)
+            genome = Genome(operations[:])
+            genome.score = calculate_fitness(genome.operations)
+            self.genomes.append(genome)
 
-	def sort_population(self):
-		"""
-		Sorts the population based on the fitness score
-		"""
-		self.genomes.sort(key = attrgetter('score'), reverse = False)
+    def sort_population(self):
+        """
+        Sorts the population based on the fitness score
+        """
+        self.genomes.sort(key = attrgetter('score'), reverse = False)
 
-	def reap_population(self):
-		"""
-		Keeps only the first SIZE individuals
-		"""
-		self.genomes = self.genomes[:100]
+    def reap_population(self):
+        """
+        Keeps only the first SIZE individuals
+        """
+        self.genomes = self.genomes[:100]
 
-	def reproduce_population(self):
-		"""
-		The miracle of life
-		"""
-		# Choose two parents from the existing population pseudo-randomly
-		parent1, parent2 = random.sample(self.genomes, 2)
-		genes_num = len(parent1.operations)
+    def reproduce_population(self):
+        """
+        The miracle of life
+        This method will take two random parents and create two children from
+        them. It will repeat this process untill two valid children are created.
+        """
+        while True:
+            first_child, second_child = self.mate()
+            mutate_genome(first_child)
+            mutate_genome(second_child)
 
-		# Choose MATE_DIST% of the genes from each parent
-		p1_amount= int((genes_num) * (MATE_DIST / 100))
+            self.genomes.append(first_child)
+            self.genomes.append(second_child)
+            # Keep reproducing until two valid children are created
+            if is_valid_permutation(first_child) and is_valid_permutation(second_child):
+                break
 
-		idx_from_p1 = random.sample(range(genes_num), p1_amount)
-		idx_from_p1.sort() # Preserve the genome relative order
+    def mate(self):
+        # Choose two parents from the existing population pseudo-randomly
+        parent1, parent2 = random.sample(self.genomes, 2)
+        genes_num = len(parent1.operations)
 
-		# Get the actual genes to be used for the first child
-		genes_from_p1 = []
-		for idx in idx_from_p1:
-			genes_from_p1.append(parent1.operations[idx])
+        # Choose MATE_DIST% of the genes from each parent
+        p1_amount= int((genes_num) * (MATE_DIST / 100))
 
-		# Get the indices of the unused genes by p1 from p2
-		idx_from_p2 = []
-		for idx, gene in enumerate(parent2.operations):
-			if gene not in genes_from_p1:
-				idx_from_p2.append(idx)
-		idx_from_p2.sort()
+        idx_from_p1 = random.sample(range(genes_num), p1_amount)
+        idx_from_p1.sort() # Preserve the genome relative order
 
-		first_child = merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2)
+        # Get the actual genes to be used for the first child
+        genes_from_p1 = []
+        for idx in idx_from_p1:
+            genes_from_p1.append(parent1.operations[idx])
 
-		# The genes for the second child are the ones unused by the first child
-		idx_from_p1 = [x for x in range(genes_num) if x not in idx_from_p1]
-		idx_from_p1.sort()
-		idx_from_p2 = [x for x in range(genes_num) if x not in idx_from_p2]
-		idx_from_p2.sort()
+        # Get the indices of the unused genes by p1 from p2
+        idx_from_p2 = []
+        for idx, gene in enumerate(parent2.operations):
+            if gene not in genes_from_p1:
+                idx_from_p2.append(idx)
+        idx_from_p2.sort()
+        first_child = merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2)
 
-		second_child = merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2)
-		print("First child : ")
-		print("".join([str(x.job) + str(x.order) for x in first_child]))
-		print("\n\n\nSecond child : ")
-		print("".join([str(x.job) + str(x.order) for x in second_child]))
+        # The genes for the second child are the ones unused by the first child
+        idx_from_p1 = [x for x in range(genes_num) if x not in idx_from_p1]
+        idx_from_p1.sort()
+        idx_from_p2 = [x for x in range(genes_num) if x not in idx_from_p2]
+        idx_from_p2.sort()
+        second_child = merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2)
 
+        return first_child, second_child
 
 
 def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
@@ -111,6 +121,14 @@ def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
 		child.append(parent2.operations[idx_from_p2[idx2]])
 		idx2 += 1
 	return child
+
+
+def mutate_genome(genome):
+    if random.random() < MUTATE_PROB:
+        idx1, idx2 = random.sample(len(genome), 2)
+        genome[idx1], genome[idx2] = genome[idx2], genome[idx1]
+    return genome
+
 
 def calculate_fitness(permutation):
 	penalization = 0

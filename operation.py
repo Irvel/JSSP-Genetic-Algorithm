@@ -11,10 +11,11 @@ production line.
 """
 class Operation:
 
-    def __init__(self, machine, duration, job_model):
+    def __init__(self, machine, duration, job_model, job_id):
     	self.machine = machine
     	self.duration = duration
     	self.job_model = job_model
+    	self.job_id = job_id
     	self.dependencies = []
 
     def __str__(self):
@@ -22,6 +23,7 @@ class Operation:
     	" Machine#" + str(self.machine) + " Duration=" + str(self.duration))
 
     def print_dependencies(self):
-    	print(str(self) + " depends on ")
-    	for operation in self.dependencies:
-    		print(str(operation))
+    	if len(self.dependencies) > 0:
+    		print(str(self) + " depends on ")
+    		for operation in self.dependencies:
+    			print(str(operation))

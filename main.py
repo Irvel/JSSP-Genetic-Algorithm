@@ -2,6 +2,7 @@ from population import Population
 import random
 from operation import Operation
 from population import is_valid_permutation
+from datetime import datetime, timedelta
 
 def print_matrix(matrix, rows, cols):
     for i in range(rows):
@@ -52,35 +53,24 @@ def get_operations_list(matrix, num_operations):
 
     return operations_list
 
-
 if __name__ == "__main__":
-    num_operations = 11
-    num_columns = 4
-    num_machines = 3
-    max_operations_per_job = 3
+	products = {}
+	products['1111'] = random.randrange(1, 50, 1)
+	products['2222'] = random.randrange(1, 50, 1)
 
-    """
-    operations is a Nx4 matrix representing each operation
-    and its Job, Order, Machine, and operation Time.
-    E.g.
+	all_jobs = []
+	all_operations = []
+	for key, value in products.items():
+		for i in range(value):
+			all_jobs.append(Job(datetime.now(), datetime.now() + timedelta(hours=170), key))
+	for job in all_jobs:
+		all_operations.extend(job.operations)
 
-         J  O  M   T
-    Op1 [1, 1, 2, 10]
-    Op2 [2, 1, 1,  5]
-    Op3 [1, 2, 1, 20]
-    Op4 [1, 3, 3, 50]
-    Op5 [2, 2, 2,  3]
-    """
-    operations_matrix = []
-    for i in range(num_operations):
-        operations_matrix.append([])
-        for j in range(num_columns):
-            operations_matrix[i].append(None)
+	for operation in all_operations:
+		print(operation)
 
-    fill_matrix(operations_matrix, num_operations, num_columns, max_operations_per_job, num_machines)
-    print_matrix(operations_matrix, num_operations, num_columns)
 
-    operations_list = get_operations_list(operations_matrix, num_operations)
+    
 
     """ Print operations in original order """
     print("\n")

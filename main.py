@@ -105,6 +105,5 @@ if __name__ == "__main__":
     print("Is valid permutation: " + str(is_valid_permutation(operations_list)))
     print("-------------------------------------")
 
-    print("\n\nThis is the generated population:")
     population = Population(operations_list)
-    #print(population)
+    population.reproduce_population()

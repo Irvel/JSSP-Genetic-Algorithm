@@ -2,7 +2,7 @@ from population import Population
 from job import Job
 import random
 from operation import Operation
-from population import is_valid_permutation
+from population import is_valid_permutation, calculate_makespan
 from datetime import datetime, timedelta
 
 if __name__ == "__main__":
@@ -22,6 +22,11 @@ if __name__ == "__main__":
 
 	for operation in all_operations:
 		print(operation)
+
+
+	var1, var2 = calculate_makespan(all_operations)
+	print(str(var2))
+	print(var1)
 
     population = Population(all_operations)
     population.reproduce_population()

@@ -11,8 +11,7 @@ class Genome:
 
     def __str__(self):
         # A string representation of the genome takes the sum of the
-        # Job, Order, Machine and Duration and converts that value into
-        # ASCII
+        # Job, Order, Machine and Duration in numeric value
         genome_string = ""
         numeric_value = 0
         ascii_value = ""
@@ -21,6 +20,10 @@ class Genome:
             numeric_value += op.duration
             numeric_value += op.machine
             numeric_value += op.order
-            ascii_value = chr((numeric_value + 50 ) % 80)
+            ascii_value = str(numeric_value % 10)
             genome_string += ascii_value
-        return genome_string
+        from population import is_valid_permutation
+        if not is_valid_permutation(self.operations):
+            return ""
+        return genome_string + " " + str(is_valid_permutation(self.operations)) + " " + str(self.score) + "\n"
+

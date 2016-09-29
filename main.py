@@ -22,25 +22,6 @@ def fill_matrix(matrix, num_operations, num_columns, operations_per_job, num_mac
 		matrix[i][3] = random.randrange(5, 100, 5)
 		job_count += 1
 
-def calculate_makespan(permutation):
-	cummulative_machine_times = {}
-	cummulative_job_times = {}
-
-	for operation in permutation:
-		#initialize variables with 0 if does not exist
-		if not operation.job in cummulative_job_times:
-			cummulative_job_times[operation.job] = 0
-
-		if not operation.machine in cummulative_machine_times:
-			cummulative_machine_times[operation.machine] = 0
-
-		if cummulative_job_times[operation.job] < cummulative_machine_times[operation.machine]:
-			cummulative_machine_times[operation.machine] += operation.duration
-			cummulative_job_times[operation.job] = cummulative_machine_times[operation.machine]
-		else:
-			cummulative_job_times[operation.job] += operation.duration
-			cummulative_machine_times[operation.machine] = cummulative_job_times[operation.job]
-
 def get_operations_list(matrix, num_operations):
     operations_list = []
     for i in range(num_operations):

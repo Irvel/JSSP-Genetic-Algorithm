@@ -30,7 +30,6 @@ class Population:
         return genomes_string
 
     def create_new_population(self, operations):
-        permutations = product(operations, repeat=len(operations))
         for _ in range(SIZE * 1000):
             random.shuffle(operations)
             genome = Genome(operations[:])

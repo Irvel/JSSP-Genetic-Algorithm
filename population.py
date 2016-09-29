@@ -4,6 +4,7 @@ population.py
 This stores a fixed set of genomes, and provides methods to
 create new generations based on the existing one.
 """
+import random
 from itertools import product
 from genome import Genome
 SIZE = 100
@@ -17,14 +18,15 @@ class Population:
     def __str__(self):
         genomes_string = ""
         for genome in self.genomes:
-            genomes_string.append(str(genome))
-            genomes_string.append("\n")
+            genomes_string += str(genome)
+            genomes_string += "\n"
         return genomes_string
 
     def create_new_population(self, operations):
         permutations = product(operations, repeat=len(operations))
-        for _ in range(SIZE):
-            genome = Genome(next(permutations))
+        for _ in range(20):
+            random.shuffle(operations)
+            genome = Genome(operations[:])
             genome.score = self.calculate_fitness(genome.operations)
             self.genomes.append(genome)
 

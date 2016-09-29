@@ -21,6 +21,6 @@ class Genome:
             numeric_value += op.duration
             numeric_value += op.machine
             numeric_value += op.order
-            ascii_value = chr(numeric_value)
-            genome_string.append(ascii_value)
+            ascii_value = chr((numeric_value + 50 ) % 80)
+            genome_string += ascii_value
         return genome_string

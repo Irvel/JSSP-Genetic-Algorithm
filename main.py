@@ -65,3 +65,5 @@ if __name__ == "__main__":
     for op in operations_list:
         print (op)
     population = Population(operations_list)
+    print("This is a population:")
+    print(population)

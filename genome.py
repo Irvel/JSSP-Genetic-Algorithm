@@ -20,5 +20,5 @@ class Genome:
             ascii_value = str(int(numeric_value) % 10)
             genome_string += ascii_value
         from population import is_valid_permutation
-        return genome_string[:20] + " " + str(is_valid_permutation(self.operations)) + " " + str(self.score) + "\n"
+        return genome_string[:12] + " " + str(is_valid_permutation(self.operations)) + " " + str(self.score) + "\n"
 

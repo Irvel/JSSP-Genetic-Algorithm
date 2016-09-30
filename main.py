@@ -30,8 +30,12 @@ if __name__ == "__main__":
 
     population = Population(all_operations)
     print(population)
-    print("\nReproducing population 15000 times...\n")
-    for i in range(15000):
+    current_best = population.genomes[1]
+    print("\nReproducing population 199000 times...\n")
+    for i in range(199000):
+        if current_best is not population.genomes[0]:
+            current_best = population.genomes[0]
+            print("It # " + str(i) + ". The current best is: " +  str(current_best), end="")
         population.reproduce_population()
     population.reap_population()
     print()

@@ -12,7 +12,7 @@ from operator import attrgetter
 SIZE = 100  # The static size that the population will be kept at
 BAD_SCORE = 600  # The penalization for each genome that violates the date
 MATE_DIST = 50  # How much genetic info from each parent to take
-MUTATE_PROB = 0.1  # How likely is a newborn to mutate
+MUTATE_PROB = 0.2  # How likely is a newborn to mutate
 REAP_THRESHOLD = 100  # Trim the population a set # of reproduction cycles
 
 class Population:
@@ -89,6 +89,7 @@ class Population:
 
         self.genomes.append(first_genome)
         self.genomes.append(second_genome)
+
         self.sort_population()
         self.reap_threshold -= 1
         if self.reap_threshold <= 0:

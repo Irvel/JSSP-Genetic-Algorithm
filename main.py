@@ -40,8 +40,10 @@ if __name__ == "__main__":
     print("Initial configuration...")
     for operation in all_operations:
         print(operation)
-    print("Initial configuration makespan: " + str(var2))
+
     """
+
+
     population = Population(all_operations)
     #print(population)
 
@@ -55,6 +57,8 @@ if __name__ == "__main__":
     print(str(products['5967'])+ " modelos 5967")
     print(str(products['8047'])+ " modelos 8047")
     print(str(products['4025'])+ " modelos 4025")
+
+    print("\n \n Tiempo final de la primera configuracion: " + str(var2))
     print("\n \n Porcentaje completado:")
     p = 0
     print("0 %")
@@ -84,7 +88,7 @@ if __name__ == "__main__":
     print("Tiempo total: " + str(best_makespan))
 
     plt.plot(generations, makespans, 'ro')
-    plt.title("Poblacion inicial: " + str(100) + " Generaciones: " + str(iterations))
+    plt.title("Poblacion inicial: " + str(30) + " Generaciones: " + str(iterations))
     plt.ylabel("Makespan")
     plt.xlabel("Generacion")
     plt.show()

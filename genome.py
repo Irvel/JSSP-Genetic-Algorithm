@@ -16,14 +16,9 @@ class Genome:
         numeric_value = 0
         ascii_value = ""
         for op in self.operations:
-            numeric_value += op.job
             numeric_value += op.duration
-            numeric_value += op.machine
-            numeric_value += op.order
-            ascii_value = str(numeric_value % 10)
+            ascii_value = str(int(numeric_value) % 10)
             genome_string += ascii_value
         from population import is_valid_permutation
-        if not is_valid_permutation(self.operations):
-            return ""
-        return genome_string + " " + str(is_valid_permutation(self.operations)) + " " + str(self.score) + "\n"
+        return genome_string[:20] + " " + str(is_valid_permutation(self.operations)) + " " + str(self.score) + "\n"
 

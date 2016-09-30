@@ -17,6 +17,8 @@ if __name__ == "__main__":
     products['8047'] = tkinter.simpledialog.askinteger("8047", "Quantity of model 8047?", minvalue=0, initialvalue=1)
     products['4025'] = tkinter.simpledialog.askinteger("4025", "Quantity of model 4025?", minvalue=0, initialvalue=1)
 
+    iterations = tkinter.simpledialog.askinteger("Iterations", "Iterations?", minvalue=1, initialvalue=50000)
+
     all_jobs = []
     all_operations = []
     job_id = 0
@@ -41,11 +43,12 @@ if __name__ == "__main__":
     
     population = Population(all_operations)
     print(population)
+
     current_best = population.genomes[1]
     makespans = []
     generations = []
-    print("\nReproducing population 40000 times...\n")
-    for i in range(40000):
+    print("\nReproducing population " + str(iterations) + " times...\n")
+    for i in range(iterations):
         if current_best is not population.genomes[0]:
             current_makespan = calculate_makespan(current_best.operations)[1]
             generations.append(i)
@@ -67,7 +70,7 @@ if __name__ == "__main__":
     print("Best makespan found: " + str(best_makespan))
     
     plt.plot(generations, makespans, 'ro')
-    plt.title("Initial population: " + str(100) + " Generations: " + str(40000))
+    plt.title("Initial population: " + str(100) + " Generations: " + str(iterations))
     plt.ylabel("Makespan")
     plt.xlabel("Generation")
     plt.show()

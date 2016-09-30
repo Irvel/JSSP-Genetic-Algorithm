@@ -36,41 +36,50 @@ if __name__ == "__main__":
     print(is_valid_permutation(all_operations))
     """
     var1, var2 = calculate_makespan(all_operations)
+    """
     print("Initial configuration...")
     for operation in all_operations:
         print(operation)
     print("Initial configuration makespan: " + str(var2))
-    
+    """
     population = Population(all_operations)
-    print(population)
+    #print(population)
 
     current_best = population.genomes[1]
     makespans = []
     generations = []
-    print("\nReproducing population " + str(iterations) + " times...\n")
+    #print("\nReproducing population " + str(iterations) + " times...\n")
+    print("********** OPTIMIZACION DE PHAR **********")
+    print("\n \n Porcentaje completado:")
+    p = 0
+    print("0 %")
     for i in range(iterations):
         if current_best is not population.genomes[0]:
             current_makespan = calculate_makespan(current_best.operations)[1]
             generations.append(i)
             makespans.append(current_makespan)
             current_best = population.genomes[0]
-            print("It #" + str(i) + ". The current best is: " +  str(current_best), end="")
-            print("Improvement percentage: " + str(100 - calculate_makespan(current_best.operations)[1]/calculate_makespan(all_operations)[1] * 100)[:6] + "%")
+            #print("It #" + str(i) + ". The current best is: " +  str(current_best), end="")
+            #print("Improvement percentage: " + str(100 - calculate_makespan(current_best.operations)[1]/calculate_makespan(all_operations)[1] * 100)[:6] + "%")
         population.reproduce_population()
+        if(i%(iterations/10) == 0):
+            p+=10
+            print(str(p) + " %")
+
     population.reap_population()
-    print()
-    print(population)
+    #print()
+    #print(population)
     print("\n\n")
 
     dummy, best_makespan = calculate_makespan(current_best.operations)
     sorted_operations = sorted(current_best.operations, key = lambda x: x.start_time, reverse = False)
-    print("Best configuration found:\n")
+    print("Mejor solucion encontrada:\n")
     for operation in sorted_operations:
         print(str(operation))
-    print("Best makespan found: " + str(best_makespan))
-    
+    print("Tiempo total: " + str(best_makespan))
+
     plt.plot(generations, makespans, 'ro')
-    plt.title("Initial population: " + str(100) + " Generations: " + str(iterations))
+    plt.title("Poblacion inicial: " + str(100) + " Generaciones: " + str(iterations))
     plt.ylabel("Makespan")
-    plt.xlabel("Generation")
+    plt.xlabel("Generacion")
     plt.show()

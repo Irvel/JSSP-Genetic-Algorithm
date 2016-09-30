@@ -24,7 +24,7 @@ class Population:
         self.reap_threshold = REAP_THRESHOLD  # How many times to reproduce before reap
         _, base_span = calculate_makespan(operations)
         bad_score = int(base_span * 1.4)
-        print("\n\nThe initial population has been generated")
+        #print("\n\nThe initial population has been generated")
 
     def __str__(self):
         genomes_string = ""
@@ -33,7 +33,7 @@ class Population:
         return genomes_string + "\n# of valid genomes: " + str(self.num_trues())
 
     def create_new_population(self, operations):
-        print("\nCreating initial population...")
+        #print("\nCreating initial population...")
         genome = Genome(operations[:])
         genome.score = calculate_fitness(genome.operations)
         self.genomes.append(genome)

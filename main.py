@@ -1,7 +1,6 @@
 from population import Population
 from job import Job
 import random
-import collections
 from operation import Operation
 from population import is_valid_permutation, calculate_makespan
 from datetime import datetime, timedelta
@@ -13,10 +12,12 @@ if __name__ == "__main__":
     root = tkinter.Tk()
     root.withdraw()
 
-    products = collections.OrderedDict()
+    products = {}
     products['5967'] = tkinter.simpledialog.askinteger("5967", "Quantity of model 5967?", minvalue=0, initialvalue=1)
     products['8047'] = tkinter.simpledialog.askinteger("8047", "Quantity of model 8047?", minvalue=0, initialvalue=1)
     products['4025'] = tkinter.simpledialog.askinteger("4025", "Quantity of model 4025?", minvalue=0, initialvalue=1)
+
+    iterations = tkinter.simpledialog.askinteger("Iterations", "Iterations?", minvalue=1, initialvalue=50000)
 
     all_jobs = []
     all_operations = []
@@ -28,25 +29,26 @@ if __name__ == "__main__":
     for job in all_jobs:
         all_operations.extend(job.operations)
 
+    """
     for operation in all_operations:
         print(operation)
 
     print(is_valid_permutation(all_operations))
-    var1, var2 = calculate_makespan(all_operations)
-    print(str(var2))
-
     """
+    var1, var2 = calculate_makespan(all_operations)
+    print("Initial configuration...")
     for operation in all_operations:
         print(operation)
-    """
-
+    print("Initial configuration makespan: " + str(var2))
+    
     population = Population(all_operations)
     print(population)
+
     current_best = population.genomes[1]
     makespans = []
     generations = []
-    print("\nReproducing population 40000 times...\n")
-    for i in range(40000):
+    print("\nReproducing population " + str(iterations) + " times...\n")
+    for i in range(iterations):
         if current_best is not population.genomes[0]:
             current_makespan = calculate_makespan(current_best.operations)[1]
             generations.append(i)
@@ -61,13 +63,14 @@ if __name__ == "__main__":
     print("\n\n")
 
     dummy, best_makespan = calculate_makespan(current_best.operations)
+    sorted_operations = sorted(current_best.operations, key = lambda x: x.start_time, reverse = False)
     print("Best configuration found:\n")
-    for operation in current_best.operations:
+    for operation in sorted_operations:
         print(str(operation))
     print("Best makespan found: " + str(best_makespan))
-
+    
     plt.plot(generations, makespans, 'ro')
-    plt.title("Initial population: " + str(100) + " Generations: " + str(40000))
+    plt.title("Initial population: " + str(100) + " Generations: " + str(iterations))
     plt.ylabel("Makespan")
     plt.xlabel("Generation")
     plt.show()

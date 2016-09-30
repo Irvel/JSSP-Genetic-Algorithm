@@ -50,6 +50,11 @@ if __name__ == "__main__":
     generations = []
     #print("\nReproducing population " + str(iterations) + " times...\n")
     print("********** OPTIMIZACION DE PHAR **********")
+
+    print("Cantidad de modelos ingresados:\n")
+    print(str(products['5967'])+ "modelos 5967")
+    print(str(products['8047'])+ "modelos 8047")
+    print(str(products['4025'])+ "modelos 4025")
     print("\n \n Porcentaje completado:")
     p = 0
     print("0 %")

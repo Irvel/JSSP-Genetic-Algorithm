@@ -9,11 +9,11 @@ from itertools import product
 from genome import Genome
 from operator import attrgetter
 
-SIZE = 100  # The static size that the population will be kept at
-BAD_SCORE = 6300  # The penalization for each genome that violates the date
+SIZE = 10  # The static size that the population will be kept at
 MATE_DIST = 50  # How much genetic info from each parent to take
 MUTATE_PROB = 0.1  # How likely is a newborn to mutate
-REAP_THRESHOLD = 300  # Trim the population a set # of reproduction cycles
+REAP_THRESHOLD = 1  # Trim the population a set # of reproduction cycles
+bad_score = 6300  # The penalization for each genome that violates the date
 
 class Population:
     def __init__(self, operations):
@@ -22,6 +22,8 @@ class Population:
         self.sort_population()
         self.reap_population()
         self.reap_threshold = REAP_THRESHOLD  # How many times to reproduce before reap
+        _, base_span = calculate_makespan(operations)
+        bad_score = int(base_span * 1.4)
         print("\n\nThe initial population has been generated")
 
     def __str__(self):
@@ -173,7 +175,7 @@ def always_mutate(genome):
 def calculate_fitness(permutation):
     penalization = 0
     if not is_valid_permutation(permutation):
-        penalization = BAD_SCORE
+        penalization = bad_score
         make_span = 10
     else:
        _, make_span = calculate_makespan(permutation)

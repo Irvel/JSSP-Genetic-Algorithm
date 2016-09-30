@@ -23,9 +23,8 @@ class Operation:
     	self.start_time = 0
 
     def __str__(self):
-    	return (" Machine: " + str(self.machine)
-    		+ " Duration: " + str(self.duration) + " Job model: " + str(self.job_model) + " Job ID: " 
-            + str(self.job_id) + " Name: " + str(self.name) + " Start time: " + str(self.start_time))
+    	return (" Etapa: " + str(self.machine)
+    		+ "| Modelo: " + str(self.job_model)+ "| Tiempo inicio: " + str(self.start_time) + "| Duracion: " + str(self.duration))
 
     def print_dependencies(self):
     	if len(self.dependencies) > 0:

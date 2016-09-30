@@ -9,10 +9,10 @@ from itertools import product
 from genome import Genome
 from operator import attrgetter
 
-SIZE = 100  # The static size that the population will be kept at
+SIZE = 10  # The static size that the population will be kept at
 MATE_DIST = 50  # How much genetic info from each parent to take
 MUTATE_PROB = 0.1  # How likely is a newborn to mutate
-REAP_THRESHOLD = 300  # Trim the population a set # of reproduction cycles
+REAP_THRESHOLD = 1  # Trim the population a set # of reproduction cycles
 bad_score = 6300  # The penalization for each genome that violates the date
 
 class Population:

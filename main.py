@@ -13,11 +13,11 @@ if __name__ == "__main__":
     root.withdraw()
 
     products = {}
-    products['5967'] = tkinter.simpledialog.askinteger("5967", "Quantity of model 5967?", minvalue=0, initialvalue=1)
-    products['8047'] = tkinter.simpledialog.askinteger("8047", "Quantity of model 8047?", minvalue=0, initialvalue=1)
-    products['4025'] = tkinter.simpledialog.askinteger("4025", "Quantity of model 4025?", minvalue=0, initialvalue=1)
+    products['5967'] = tkinter.simpledialog.askinteger("5967", "Cantidad del modelo 5967:", minvalue=0, initialvalue=1)
+    products['8047'] = tkinter.simpledialog.askinteger("8047", "Cantidad del modelo 8047:", minvalue=0, initialvalue=1)
+    products['4025'] = tkinter.simpledialog.askinteger("4025", "Cantidad del modelo 4025:", minvalue=0, initialvalue=1)
 
-    iterations = tkinter.simpledialog.askinteger("Iterations", "Iterations?", minvalue=1, initialvalue=50000)
+    iterations = tkinter.simpledialog.askinteger("Iterations", "Cantidad de iteraciones:", minvalue=1, initialvalue=50000)
 
     all_jobs = []
     all_operations = []

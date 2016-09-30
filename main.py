@@ -27,17 +27,17 @@ if __name__ == "__main__":
     for job in all_jobs:
         all_operations.extend(job.operations)
 
+    """
     for operation in all_operations:
         print(operation)
 
     print(is_valid_permutation(all_operations))
-    var1, var2 = calculate_makespan(all_operations)
-    print(str(var2))
-    
     """
+    var1, var2 = calculate_makespan(all_operations)
+    print("Initial configuration...")
     for operation in all_operations:
         print(operation)
-    """
+    print("Initial configuration makespan: " + str(var2))
     
     population = Population(all_operations)
     print(population)
@@ -60,8 +60,9 @@ if __name__ == "__main__":
     print("\n\n")
 
     dummy, best_makespan = calculate_makespan(current_best.operations)
+    sorted_operations = sorted(current_best.operations, key = lambda x: x.start_time, reverse = False)
     print("Best configuration found:\n")
-    for operation in current_best.operations:
+    for operation in sorted_operations:
         print(str(operation))
     print("Best makespan found: " + str(best_makespan))
     

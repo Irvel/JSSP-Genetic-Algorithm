@@ -20,11 +20,12 @@ class Operation:
     	self.job_model = job_model
     	self.job_id = job_id
     	self.dependencies = []
+    	self.start_time = 0
 
     def __str__(self):
     	return (" Machine: " + str(self.machine)
     		+ " Duration: " + str(self.duration) + " Job model: " + str(self.job_model) + " Job ID: " 
-            + str(self.job_id) + " Name: " + str(self.name))
+            + str(self.job_id) + " Name: " + str(self.name) + " Start time: " + str(self.start_time))
 
     def print_dependencies(self):
     	if len(self.dependencies) > 0:

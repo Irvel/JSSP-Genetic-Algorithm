@@ -216,20 +216,23 @@ def calculate_makespan(permutation):
                     max_time_dependencies = operations_end_time[dependent_operation]
             operations_end_time[operation] = max_time_dependencies
 
-
         #Calculate time
         if operations_end_time[operation] < cummulative_machine_times[operation.machine]:
+
+            operation.start_time = cummulative_machine_times[operation.machine]
+
             cummulative_machine_times[operation.machine] += operation.duration
             operations_end_time[operation] = cummulative_machine_times[operation.machine]
         else:
+
+            operation.start_time = operations_end_time[operation]
+
             operations_end_time[operation] += operation.duration
             cummulative_machine_times[operation.machine] = operations_end_time[operation]
 
         """Save the time of each operation.
          So, at the end you have the last one is the one saved """
         jobs_end_time[operation.job_id] = operations_end_time[operation]
-
-
 
     """Return a map mapping each job with the corresponding end time,
      and the biggest time of the jobs"""

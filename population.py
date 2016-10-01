@@ -5,14 +5,14 @@ This stores a fixed set of genomes, and provides methods to
 create new generations based on the existing one.
 """
 import random
-from itertools import product
-from genome import Genome
+import collections
 from operator import attrgetter
 
-SIZE = 30  # The static size that the population will be kept at
+from genome import Genome
+
+SIZE = 200  # The static size that the population will be kept at
 MATE_DIST = 50  # How much genetic info from each parent to take
-MUTATE_PROB = 0.3  # How likely is a newborn to mutate
-REAP_THRESHOLD = 1  # Trim the population a set # of reproduction cycles
+MUTATE_PROB = 0.4  # How likely is a newborn to mutate
 bad_score = 6300  # The penalization for each genome that violates the date
 
 class Population:
@@ -21,10 +21,8 @@ class Population:
         self.create_new_population(operations)
         self.sort_population()
         self.reap_population()
-        self.reap_threshold = REAP_THRESHOLD  # How many times to reproduce before reap
         _, base_span = calculate_makespan(operations)
-        bad_score = int(base_span * 1.4)
-        #print("\n\nThe initial population has been generated")
+        bad_score = int(base_span * 1.1)
 
     def __str__(self):
         genomes_string = ""
@@ -38,29 +36,9 @@ class Population:
         genome.score = calculate_fitness(genome.operations)
         self.genomes.append(genome)
         for _ in range(SIZE):
-            genome = Genome(self.generate_rand_valid(operations[:]))
+            genome = Genome(shuffle_valid_genome(operations[:]))
             genome.score = calculate_fitness(genome.operations)
             self.genomes.append(genome)
-
-    def generate_rand_valid(self, operations):
-        permutation = []
-        for op in random.sample(operations, len(operations)):
-            if not op.dependencies:
-                permutation.append(op)
-        while len(permutation) < len(operations):
-            for op in random.sample(operations, len(operations)):
-                if op not in permutation:
-                    dep_sat = True
-                    for dep in op.dependencies:
-                        # If its dependency is not yet satisfied, then can't add it
-                        if dep not in permutation:
-                            dep_sat = False
-                            break
-                    if dep_sat:
-                        permutation.append(op)
-        return permutation
-
-
 
     def sort_population(self):
         """
@@ -91,12 +69,8 @@ class Population:
 
         self.genomes.append(first_genome)
         self.genomes.append(second_genome)
-
         self.sort_population()
-        self.reap_threshold -= 1
-        if self.reap_threshold <= 0:
-            self.reap_population()
-            self.reap_threshold = REAP_THRESHOLD
+        self.reap_population()
 
     def mate(self):
         # Choose two parents from the existing population pseudo-randomly
@@ -131,13 +105,6 @@ class Population:
 
         return first_child, second_child
 
-    def num_trues(self):
-        num_trues = 0
-        for genome in self.genomes:
-            if is_valid_permutation(genome.operations):
-                num_trues += 1
-        return num_trues
-
 
 def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
     idx1 = 0
@@ -162,21 +129,36 @@ def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
     return child
 
 
-def mutate_genome(genome):
-    if random.random() < MUTATE_PROB:
-        idx1, idx2 = random.sample(range(len(genome)), 2)
-        genome[idx1], genome[idx2] = genome[idx2], genome[idx1]
+def shuffle_valid_genome(operations, shuffle_amount=100):
+        operations_dict = collections.OrderedDict() # Constant access time
 
-def always_mutate(genome):
-    idx1, idx2 = random.sample(range(len(genome)), 2)
-    genome[idx1], genome[idx2] = genome[idx2], genome[idx1]
+        for i in range(len(operations) * (100 - shuffle_amount) // 100):
+            operations_dict[operations[i]] = True
+
+        while len(operations_dict) < len(operations):
+            for op in random.sample(operations, len(operations)):
+                if op not in operations_dict:
+                    dependency_satisfied = True
+                    for dep in op.dependencies:
+                        # If its dependency is not yet satisfied, then can't add it
+                        if dep not in operations_dict:
+                            dependency_satisfied = False
+                            break
+                    if dependency_satisfied:
+                        operations_dict[op] = True
+        return [gene for gene in operations_dict.keys()]
+
+
+def mutate_genome(operations):
+    if random.random() < MUTATE_PROB:
+        return shuffle_valid_genome(operations, 50)
 
 
 def calculate_fitness(permutation):
     penalization = 0
     if not is_valid_permutation(permutation):
         penalization = bad_score
-        make_span = 10
+        make_span = 0
     else:
        _, make_span = calculate_makespan(permutation)
     score = make_span + penalization
@@ -194,6 +176,7 @@ def is_valid_permutation(permutation):
                 return False
         operation_done[op] = 1
     return True
+
 
 def calculate_makespan(permutation):
     cummulative_machine_times = {}

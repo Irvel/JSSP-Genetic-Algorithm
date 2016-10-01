@@ -1,23 +1,30 @@
+import random
+import collections
+from datetime import datetime, timedelta
+
+from termcolor import cprint
+# import tkinter.simpledialog
+
+import plotter
 from population import Population
 from job import Job
-import random
 from operation import Operation
-from population import is_valid_permutation, calculate_makespan
-from datetime import datetime, timedelta
-import tkinter.simpledialog
-import matplotlib.pyplot as plt
+from population import is_valid_permutation, calculate_makespan, calculate_fitness
 
 if __name__ == "__main__":
 
-    root = tkinter.Tk()
-    root.withdraw()
+    # root = tkinter.Tk()
+    # root.withdraw()
 
-    products = {}
-    products['5967'] = tkinter.simpledialog.askinteger("5967", "Cantidad del modelo 5967:", minvalue=0, initialvalue=1)
-    products['8047'] = tkinter.simpledialog.askinteger("8047", "Cantidad del modelo 8047:", minvalue=0, initialvalue=1)
-    products['4025'] = tkinter.simpledialog.askinteger("4025", "Cantidad del modelo 4025:", minvalue=0, initialvalue=1)
-
-    iterations = tkinter.simpledialog.askinteger("Iterations", "Cantidad de iteraciones:", minvalue=1, initialvalue=50000)
+    products = collections.OrderedDict()
+    # products['5967'] = tkinter.simpledialog.askinteger("5967", "Quantity of model 5967?", minvalue=0, initialvalue=1)
+    # products['8047'] = tkinter.simpledialog.askinteger("8047", "Quantity of model 8047?", minvalue=0, initialvalue=1)
+    # products['4025'] = tkinter.simpledialog.askinteger("4025", "Quantity of model 4025?", minvalue=0, initialvalue=1)
+    # iterations = tkinter.simpledialog.askinteger("Iterations", "Iterations?", minvalue=1, initialvalue=50000)
+    products['5967'] = 3
+    products['8047'] = 3
+    products['4025'] = 3
+    iterations = 3000
 
     all_jobs = []
     all_operations = []
@@ -29,66 +36,52 @@ if __name__ == "__main__":
     for job in all_jobs:
         all_operations.extend(job.operations)
 
-    """
-    for operation in all_operations:
-        print(operation)
-
-    print(is_valid_permutation(all_operations))
-    """
     var1, var2 = calculate_makespan(all_operations)
-    """
-    print("Initial configuration...")
-    for operation in all_operations:
-        print(operation)
 
-    """
-
+    cprint("********** JSSP Genetic Solver **********", "yellow")
 
     population = Population(all_operations)
-    #print(population)
 
     current_best = population.genomes[1]
     makespans = []
-    generations = []
-    #print("\nReproducing population " + str(iterations) + " times...\n")
-    print("********** OPTIMIZACION DE PHAR **********")
+    iteration_numbers = []
 
-    print("Cantidad de modelos ingresados:\n")
+    print("Cantidad de modelos ingresados:")
     print(str(products['5967'])+ " modelos 5967")
     print(str(products['8047'])+ " modelos 8047")
     print(str(products['4025'])+ " modelos 4025")
 
-    print("\n \n Tiempo final de la primera configuracion: " + str(var2))
-    print("\n \n Porcentaje completado:")
+    cprint("\n\nBase configuration:", "blue")
+    for operation in all_operations:
+        print(str(operation))
+    cprint("Total makespan: " + str(var2) + "\n", "grey")
+
+    print("\nReproducing population " + str(iterations) + " times...\n")
     p = 0
-    print("0 %")
     for i in range(iterations):
+        makespans.extend([calculate_fitness(x.operations) for x in population.genomes])
+        for _ in range(len(population.genomes)):
+            iteration_numbers.append(i)
         if current_best is not population.genomes[0]:
             current_makespan = calculate_makespan(current_best.operations)[1]
-            generations.append(i)
-            makespans.append(current_makespan)
+
             current_best = population.genomes[0]
-            #print("It #" + str(i) + ". The current best is: " +  str(current_best), end="")
-            #print("Improvement percentage: " + str(100 - calculate_makespan(current_best.operations)[1]/calculate_makespan(all_operations)[1] * 100)[:6] + "%")
+            print("#" + str(i) + ". The current best is: " + str(calculate_makespan(current_best.operations)[1])[:7], end=" ")
+            print("    Improvement over base: ", end="")
+            cprint(str(100 - calculate_makespan(current_best.operations)[1]/ var2 * 100)[:6] + "%", "cyan")
         population.reproduce_population()
-        if(i%(iterations/10) == 0):
-            p+=10
-            print(str(p) + " %")
+        if i%(iterations/10) == 0:
+            p += 10
+            cprint("- Completion amount: " + str(p) + "%", 'green')
 
     population.reap_population()
-    #print()
-    #print(population)
-    print("\n\n")
 
     dummy, best_makespan = calculate_makespan(current_best.operations)
     sorted_operations = sorted(current_best.operations, key = lambda x: x.start_time, reverse = False)
-    print("Mejor solucion encontrada:\n")
+    cprint("\n\nOptimized configuration:", "blue")
     for operation in sorted_operations:
         print(str(operation))
-    print("Tiempo total: " + str(best_makespan))
+    cprint("Total makespan: " + str(var2) + "\n", "grey")
 
-    plt.plot(generations, makespans, 'ro')
-    plt.title("Poblacion inicial: " + str(30) + " Generaciones: " + str(iterations))
-    plt.ylabel("Makespan")
-    plt.xlabel("Generacion")
-    plt.show()
+
+    plotter.plot(iteration_numbers, makespans)

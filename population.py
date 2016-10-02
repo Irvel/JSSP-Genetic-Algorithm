@@ -10,14 +10,15 @@ from operator import attrgetter
 
 from genome import Genome
 
-SIZE = 200  # The static size that the population will be kept at
+SIZE = 270  # The static size that the population will be kept at
 MATE_DIST = 50  # How much genetic info from each parent to take
 MUTATE_PROB = 0.4  # How likely is a newborn to mutate
 bad_score = 6300  # The penalization for each genome that violates the date
 
 class Population:
-    def __init__(self, operations):
+    def __init__(self, operations, size):
         self.genomes = []
+        self.population_size = size
         self.create_new_population(operations)
         self.sort_population()
         self.reap_population()
@@ -35,7 +36,7 @@ class Population:
         genome = Genome(operations[:])
         genome.score = calculate_fitness(genome.operations)
         self.genomes.append(genome)
-        for _ in range(SIZE):
+        for _ in range(self.population_size):
             genome = Genome(shuffle_valid_genome(operations[:]))
             genome.score = calculate_fitness(genome.operations)
             self.genomes.append(genome)
@@ -50,7 +51,7 @@ class Population:
         """
         Keeps only the first SIZE individuals
         """
-        self.genomes = self.genomes[:SIZE]
+        self.genomes = self.genomes[:self.population_size]
 
     def reproduce_population(self):
         """
@@ -131,7 +132,6 @@ def merge_genomes(parent1, parent2, idx_from_p1, idx_from_p2):
 
 def shuffle_valid_genome(operations, shuffle_amount=100):
         operations_dict = collections.OrderedDict() # Constant access time
-
         for i in range(len(operations) * (100 - shuffle_amount) // 100):
             operations_dict[operations[i]] = True
 
@@ -151,7 +151,7 @@ def shuffle_valid_genome(operations, shuffle_amount=100):
 
 def mutate_genome(operations):
     if random.random() < MUTATE_PROB:
-        return shuffle_valid_genome(operations, 50)
+        return shuffle_valid_genome(operations, 90)
 
 
 def calculate_fitness(permutation):

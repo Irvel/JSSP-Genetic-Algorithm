@@ -21,10 +21,10 @@ if __name__ == "__main__":
     # products['8047'] = tkinter.simpledialog.askinteger("8047", "Quantity of model 8047?", minvalue=0, initialvalue=1)
     # products['4025'] = tkinter.simpledialog.askinteger("4025", "Quantity of model 4025?", minvalue=0, initialvalue=1)
     # iterations = tkinter.simpledialog.askinteger("Iterations", "Iterations?", minvalue=1, initialvalue=50000)
-    products['5967'] = 3
-    products['8047'] = 3
+    products['5967'] = 4
+    products['8047'] = 5
     products['4025'] = 3
-    iterations = 3000
+    iterations = 12000
 
     all_jobs = []
     all_operations = []
@@ -40,9 +40,10 @@ if __name__ == "__main__":
 
     cprint("********** JSSP Genetic Solver **********", "yellow")
 
-    population = Population(all_operations)
+    population_size = int(4.9 * len(all_operations))
+    population = Population(all_operations, population_size)
 
-    current_best = population.genomes[1]
+    current_best = population.genomes[1] # So that the first best is always printed
     makespans = []
     iteration_numbers = []
 
@@ -50,7 +51,7 @@ if __name__ == "__main__":
     print(str(products['5967'])+ " modelos 5967")
     print(str(products['8047'])+ " modelos 8047")
     print(str(products['4025'])+ " modelos 4025")
-
+    print("Population size: " + str(population_size))
     cprint("\n\nBase configuration:", "blue")
     for operation in all_operations:
         print(str(operation))
@@ -81,7 +82,7 @@ if __name__ == "__main__":
     cprint("\n\nOptimized configuration:", "blue")
     for operation in sorted_operations:
         print(str(operation))
-    cprint("Total makespan: " + str(var2) + "\n", "grey")
+    cprint("Total makespan: " + str(best_makespan) + "\n", "grey")
 
 
-    plotter.plot(iteration_numbers, makespans)
+    # plotter.plot(iteration_numbers, makespans)
